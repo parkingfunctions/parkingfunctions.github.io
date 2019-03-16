@@ -8,8 +8,30 @@
   </li>
 </html>
 <script>
+function IsParkingFunction(List){
+n = List.length;
+Count = []
+for(i=0; i < n; i++){
+Count.push(0);
+}
+List.forEach(function(a){
+if(!(1 <= +a && +a <= n)){
+return false
+};
+Count[(+a)-1]+=1
+});
+Running = 0;
+for(i=0; i < n; i++){
+Running+=Count[i];
+if(Running < i+1){
+return false
+}
+}
+return true
+};
 function myfunction(){
 A = document.getElementById("inputbox").value;
-console.log(A.split(','));
-}
+List = A.split(',');
+console.log(IsParkingFunction(List));
+};
 </script>
