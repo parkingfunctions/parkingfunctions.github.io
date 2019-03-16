@@ -1,11 +1,12 @@
 <style>
 </style>
 <html>
-<input type="text" onchange="myfunction()">
+<input type="text" id="inputbox" oninput="myfunction()">
   </input>
 </html>
 <script>
 function myfunction(){
-console.log("Test")
+A = document.getElementById("inputbox").value;
+console.log(A.split(','));
 }
 </script>
