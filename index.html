@@ -6,9 +6,8 @@
   <p>Hint: "1,1,4,5" shouldn't work, but "1,1,4,2" should work.</p>
 <input type="text" id="inputbox" oninput="myfunction()">
   </input>
-<li id="list">
-<item>
-  </li>
+<ul id="list">
+  </ul>
 </html>
 <script>
 function IsParkingFunction(List){
@@ -38,11 +37,18 @@ return Answer
 };
 
 function MakeList(List){
-Current = document.getElementById("")
+Current = document.getElementById("list");
+Current.innerHTML = '';
+for(i=0; i < List.length; i++){
+A = document.createElement("li");
+A.textContent = List[i];
+Current.appendNode(A)
+}
 }
 function myfunction(){
 A = document.getElementById("inputbox").value;
 List = A.split(',');
+MakeList(IsParkingFunction(List));
 console.log(IsParkingFunction(List));
 };
 </script>
