@@ -1,9 +1,12 @@
 <style>
 </style>
 <html>
+<p> A "parking function" is a sequence of integers from 1 to n where there's at least one one, at least two things less than or equal to two, and at least i things less than or equal to i for all i.</p>
+  <p> Try to type a parking function into this box, separated by commas, and see if it works.</p>
+  <p>Hint: "1,1,4,5" shouldn't work, but "1,1,4,2" should work.</p>
 <input type="text" id="inputbox" oninput="myfunction()">
   </input>
-<li type="list">
+<li id="list">
 <item>
   </li>
 </html>
@@ -14,21 +17,29 @@ Count = []
 for(i=0; i < n; i++){
 Count.push(0);
 }
-List.forEach(function(a){
-if(!(1 <= +a && +a <= n)){
-return false
+for(i=0; i < n; i++){
+if(isNaN(+List[i])){
+return ['Something\'s Not A Number.']
 };
-Count[(+a)-1]+=1
-});
+Count[(+List[i])-1]+=1
+};
+Answer = []
 Running = 0;
 for(i=0; i < n; i++){
 Running+=Count[i];
 if(Running < i+1){
-return false
+Answer.push('There are '+(Running)+' numbers <= '+(i+1)+', Bad.')
+}
+else{
+Answer.push('There are '+(Running)+' numbers <= '+(i+1)+', Good.') 
 }
 }
-return true
+return Answer
 };
+
+function MakeList(List){
+Current = document.getElementById("
+}
 function myfunction(){
 A = document.getElementById("inputbox").value;
 List = A.split(',');
