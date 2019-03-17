@@ -27,10 +27,10 @@ Running = 0;
 for(i=0; i < n; i++){
 Running+=Count[i];
 if(Running < i+1){
-Answer.push('There are '+(Running)+' numbers <= '+(i+1)+', Bad.')
+Answer.push('There are only '+(Running)+' numbers <= '+(i+1)+', That\'s not enough, Bad.')
 }
 else{
-Answer.push('There are '+(Running)+' numbers <= '+(i+1)+', Good.') 
+Answer.push('There are '+(Running)+' numbers <= '+(i+1)+', That\'s enough, Good.') 
 }
 }
 return Answer
