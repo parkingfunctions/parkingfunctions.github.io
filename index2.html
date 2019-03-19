@@ -73,13 +73,13 @@ return Path;
 };
 //<line x1="20px" x2="10px" y1="25px" y2="55px" width="5px" stroke="black"></line>
 function MakeLine(x1, y1, x2, y2){
-Line = document.createElement("line");
-Line.setAttribute("x1", x1+"px");
-Line.setAttribute("y1", y1+"px");
-Line.setAttribute("x2", x2+"px");
-Line.setAttribute("y2", y2+"px");
-Line.setAttribute("width", "5px")
-Line.setAttribute("stroke", "black");
+Line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+Line.setAttributeNS(null, "x1", x1+"px");
+Line.setAttributeNS(null, "y1", y1+"px");
+Line.setAttributeNS(null, "x2", x2+"px");
+Line.setAttributeNS(null, "y2", y2+"px");
+Line.setAttributeNS(null, "width", "5px")
+Line.setAttributeNS(null, "stroke", "black");
 document.getElementById("mysvg").appendChild(Line);
 };
 
@@ -91,12 +91,12 @@ for(i=0; i < Path.length; i++){
 if(Path[i]=='D'){
 MakeLine(LineSize*i, 500-LineSize*Running, LineSize*(i+1), 500-LineSize*(Running-1));
 console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running-1))
-Running+=1;
+Running-=1;
 }
 else{
 MakeLine(LineSize*i, 500-LineSize*Running, LineSize*(i+1), 500-LineSize*(Running+1));
 console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
-Running-=1;
+Running+=1;
 }
 console.log(i, Running)
 };
