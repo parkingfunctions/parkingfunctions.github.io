@@ -81,20 +81,22 @@ Line.setAttribute("y2", y2+"px");
 Line.setAttribute("width", "5px")
 Line.setAttribute("stroke", "black");
 document.getElementById("mysvg").appendChild(Line);
-}
+};
+
 function PathToSVG(List){
 Path = ParkingFunctionToPath(List);
 Running = 0;
 n = List.length;
 for(i=0; i < 2*List.length; i++){
-if(List[i]='D'){
-MakeLine(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running-1));
-Running-=1;
-}
-else{
+if(Path[i]='D'){
 MakeLine(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
 Running+=1;
 }
+else{
+MakeLine(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running-1));
+Running-=1;
+}
+console.log(i, Running)
 };
 
 
