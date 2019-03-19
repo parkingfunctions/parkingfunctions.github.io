@@ -87,14 +87,15 @@ function PathToSVG(List){
 Path = ParkingFunctionToPath(List);
 console.log(Path);
 Running = 0;
-n = List.length;
-for(i=0; i < 2*List.length; i++){
-if(Path[i]='D'){
-MakeLine(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
+for(i=0; i < Path.length; i++){
+if(Path[i]=='D'){
+MakeLine(LineSize*i, 500-LineSize*Running, LineSize*(i+1), 500-LineSize*(Running-1));
+console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running-1))
 Running+=1;
 }
 else{
-MakeLine(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running-1));
+MakeLine(LineSize*i, 500-LineSize*Running, LineSize*(i+1), 500-LineSize*(Running+1));
+console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
 Running-=1;
 }
 console.log(i, Running)
