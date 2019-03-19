@@ -9,8 +9,11 @@
   </input>
 <ul id="list">
   </ul>
+<svg id="mysvg" style="width:500; height:500">
+</svg>
 </html>
 <script>
+LineSize = 50;
 function IsParkingFunction(List){
 n = List.length;
 Count = []
@@ -46,9 +49,54 @@ Current.appendChild(A)
 }
 }
 function myfunction(){
+MakeList(IsParkingFunction(List));
 A = document.getElementById("inputbox").value;
 List = A.split(',');
-MakeList(IsParkingFunction(List));
 console.log(IsParkingFunction(List));
+};
+
+function ParkingFunctionToPath(List){
+n = List.length;
+Path = [];
+Count = {};
+for(i=0; i < n; i++){
+Count[i] = [];
+};
+for(i=0; i < List.length; i++){
+Count[List[i]-1].push(i+1)
+};
+for(i=0; i < List.length; i++){
+Count[i].push('D');
+Path = Path.concat(Count[i]);
+}
+console.log(Path)
+};
+//<line x1="20px" x2="10px" y1="25px" y2="55px" width="5px" stroke="black"></line>
+function MakeLine(x1, y1, x2, y2){
+Line = document.createElement("line");
+Line.setAttribute("x1", x1+"px");
+Line.setAttribute("y1", y1+"px");
+Line.setAttribute("x2", x2+"px");
+Line.setAttribute("y2", y2+"px");
+Line.setAttribute("width", "5px")
+Line.setAttribute("stroke", "black");
+document.getElementById("mysvg").appendChild(Line);
+}
+function PathToSVG(List){
+Path = ParkingFunctionToPath(List);
+Running = 0;
+n = List.length;
+for(i=0; i < 2*List.length; i++){
+if(List[i]='D'){
+MakeLine(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running-1));
+Running-=1;
+}
+else{
+MakeLine(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
+Running+=1;
+}
+};
+
+
 };
 </script>
