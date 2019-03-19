@@ -100,12 +100,12 @@ console.log(i, Running)
 };
 
 function myfunction(){
+document.getElementById("mysvg").innerHTML = '';
 A = document.getElementById("inputbox").value;
 List = A.split(',');
 W = IsParkingFunction(List)
 MakeList(W[1]);
 if(W[0]){
-document.getElementById("mysvg").innerHTML = '';
 PathToSVG(List);
 }
 };
