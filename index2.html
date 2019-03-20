@@ -102,7 +102,7 @@ Running-=1;
 else{
 MakeLine(LineSize*i, 500-LineSize*Running, LineSize*(i+1), 500-LineSize*(Running+1));
 //Midpoint = (LineSize*(i+0.5), (100-LineSize*(Running+0.5));
-MakeText(LineSize*(i+0.5), (100-LineSize*(Running+0.5)), ''+Path[i]);
+MakeText(LineSize*(i+0.5), (500-LineSize*(Running+0.5)), ''+Path[i]);
 console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
 Running+=1;
 }
