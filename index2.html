@@ -15,7 +15,6 @@
 </svg>
 </html>
 <script>
-LineSize = 50;
 function IsParkingFunction(List){
 n = List.length;
 Count = []
@@ -91,21 +90,26 @@ Text.textContent = String;
 document.getElementById("mysvg").appendChild(Text);
 };
 function PathToSVG(List){
+SVGWidth = document.getElementById("mysvg").clientWidth;
+SVGHeight = document.getElementById("mysvg").clientHeight;
+LineSize = SVGWidth/(2*List.length);
+MaxHeight = List.length*LineSize;
 Path = ParkingFunctionToPath(List);
 console.log(Path);
-Running = 0;
+Running = MaxHeight;
+//Start should be at MaxHeight down from the top, which is to say, MaxHeight.
+//
 for(i=0; i < Path.length; i++){
 if(Path[i]=='D'){
-MakeLine(LineSize*i, 500-LineSize*Running, LineSize*(i+1), 500-LineSize*(Running-1));
-console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running-1))
-Running-=1;
+MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
+Running+=LineSize;
 }
 else{
-MakeLine(LineSize*i, 500-LineSize*Running, LineSize*(i+1), 500-LineSize*(Running+1));
+MakeLine(LineSize*i, Running, LineSize*(i+1), (Running-LineSize));
 //Midpoint = (LineSize*(i+0.5), (100-LineSize*(Running+0.5));
-MakeText(LineSize*(i+0.5), (500-LineSize*(Running+0.5)), ''+Path[i]);
+MakeText(LineSize*(i+0.5), (Running-0.5*LineSize), ''+Path[i]);
 console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
-Running+=1;
+Running-=LineSize;
 }
 console.log(i, Running)
 };
