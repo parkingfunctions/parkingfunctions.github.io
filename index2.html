@@ -52,6 +52,20 @@ Current.appendChild(A)
 }
 }
 
+function HeightFromPath(List){
+Running = 0;
+Max = 0
+n = List.length;
+for(i=0; i < n; i++){
+if(List[i]=='D'){
+Running-=1
+}
+else{
+Running+=1;
+Max = Math.max(Max, Running);
+}
+return Max
+}
 
 function ParkingFunctionToPath(List){
 n = List.length;
@@ -93,8 +107,8 @@ function PathToSVG(List){
 SVGWidth = document.getElementById("mysvg").clientWidth;
 SVGHeight = document.getElementById("mysvg").clientHeight;
 LineSize = SVGWidth/(2*List.length);
-MaxHeight = List.length*LineSize;
 Path = ParkingFunctionToPath(List);
+MaxHeight = HeightFromPath(Path);
 console.log(Path);
 Running = MaxHeight;
 //Start should be at MaxHeight down from the top, which is to say, MaxHeight.
