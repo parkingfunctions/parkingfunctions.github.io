@@ -34,105 +34,6 @@ for(i=0; i < n; i++){
 Running+=Count[i];
 if(Running < i+1){
 Answer.push('There are only '+(Running)+' numbers <= '+(i+1)+', that\'s not enough, Bad.');
-1
-​
-2
-<style>
-3
-</style>
-4
-<html>
-5
-<p> A "parking function" is a sequence of positive integers from 1 to n where there's at least one one, at least two things less than or equal to two, and at least i things less than or equal to i for all i.</p>
-6
-  <p> Try to type a parking function into this box, separated by commas, and see if it works.</p>
-7
-  <p>Hint: "1,1,4,5" shouldn't work, but "1,1,4,2" should work.</p>
-8
-<input type="text" id="inputbox" oninput="myfunction()">
-9
-  </input>
-10
-<ul id="list">
-11
-  </ul>
-12
-<p>There is a bijection between parking functions and "labeled mountain ranges", where "you take number-of-ones steps up, then a step down, then number-of-twos steps up, then a step down", etc.</p>
-13
-<p>Below is the "labeled mountain range" corresponding to your parking function (if you put in a valid parking function). Currently oddly formatted.</p>
-14
-<svg id="mysvg" style="width:500; height:500">
-15
-</svg>
-16
-</html>
-17
-<script>
-18
-function IsParkingFunction(List){
-19
-n = List.length;
-20
-Count = []
-21
-for(i=0; i < n; i++){
-22
-Count.push(0);
-23
-}
-24
-for(i=0; i < n; i++){
-25
-if(isNaN(+List[i])){
-26
-return [false, ['Something\'s Not A Number.']]
-27
-};
-28
-Count[(+List[i])-1]+=1
-29
-};
-30
-Answer = [];
-31
-Works = true;
-32
-Running = 0;
-33
-for(i=0; i < n; i++){
-34
-Running+=Count[i];
-35
-if(Running < i+1){
-36
-Answer.push('There are only '+(Running)+' numbers <= '+(i+1)+', that\'s not enough, Bad.');
-37
-Works = false;
-38
-}
-39
-else{
-40
-Answer.push('There are '+(Running)+' numbers <= '+(i+1)+', that\'s enough, Good!') 
-41
-}
-42
-}
-43
-return [Works, Answer]
-44
-};
-45
-function MakeList(List){
-46
-Current = document.getElementById("list");
-47
-Current.innerHTML = '';
-48
-for(i=0; i < List.length; i++){
-49
-A = document.createElement("li");
-
 Works = false;
 }
 else{
@@ -150,7 +51,6 @@ A.textContent = List[i];
 Current.appendChild(A)
 }
 }
-
 function HeightFromPath(List){
 Running = 0;
 Max = 0
@@ -165,7 +65,6 @@ Max = Math.max(Max, Running);
 }}
 return Max
 };
-
 function ParkingFunctionToPath(List){
 n = List.length;
 Path = [];
@@ -194,7 +93,6 @@ Line.setAttributeNS(null, "stroke", "grey");
 Line.setAttributeNS(null, "stroke-dasharray", "5,5")
 document.getElementById("mysvg").appendChild(Line);
 };
-
 function MakeText(x, y, String){
 Text = document.createElementNS("http://www.w3.org/2000/svg", "text");
 Text.setAttributeNS(null, "x", x+"px");
@@ -207,7 +105,7 @@ SVGWidth = document.getElementById("mysvg").clientWidth;
 SVGHeight = document.getElementById("mysvg").clientHeight;
 LineSize = SVGWidth/(2*List.length);
 Path = ParkingFunctionToPath(List);
-MaxHeight = LineSize*HeightFromPath(Path);
+MaxHeight = HeightFromPath(Path)*LineSize;
 console.log(Path);
 Running = MaxHeight;
 //Start should be at MaxHeight down from the top, which is to say, MaxHeight.
@@ -227,7 +125,6 @@ Running-=LineSize;
 console.log(i, Running)
 };
 };
-
 function myfunction(){
 document.getElementById("mysvg").innerHTML = '';
 A = document.getElementById("inputbox").value;
