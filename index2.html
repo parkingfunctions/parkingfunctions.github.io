@@ -150,6 +150,10 @@ Running-=LineSize;
 }
 };
 MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
+A = document.getElementById("mysvg").getElementsByTagName("text");
+for(i=0; i < A.length; i++){
+document.getElementById("mysvg").appendChild(A[i]);
+};
 };
 function myfunction(){
 document.getElementById("mysvg").innerHTML = '';
@@ -161,4 +165,6 @@ if(W[0]){
 PathToSVG(List);
 }
 };
+  
+
 </script>
