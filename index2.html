@@ -130,9 +130,10 @@ for(i=0; i < Path.length; i++){
 if(Path[i]=='D'){
 MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
 Running+=LineSize;
-ToAdd = (MaxHeight-Running)/LineSize;
+ToAdd = Math.round((MaxHeight-Running)/LineSize);
 cx = LineSize*(i-1);
 cy = Running;
+console.log(i, ToAdd)
 for(j=0; j < ToAdd; j++){
 T = Triangle(cx/LineSize, cy/LineSize, LineSize);
 document.getElementById("mysvg").appendChild(T);
@@ -147,7 +148,6 @@ MakeText(LineSize*(i+0.5), (Running-0.5*LineSize), ''+Path[i]);
 console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
 Running-=LineSize;
 }
-console.log(i, Running)
 };
 };
 function myfunction(){
