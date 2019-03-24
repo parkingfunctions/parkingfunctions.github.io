@@ -116,6 +116,12 @@ Text.setAttributeNS(null, "y", y+"px");
 Text.textContent = String;
 document.getElementById("mysvg").appendChild(Text);
 };
+function FixText(){
+B = document.getElementById("mysvg").getElementsByTagName("text");
+for(i=0; i < B.length; i++){
+document.getElementById("mysvg").appendChild(B[i]);
+};
+
 function PathToSVG(List){
 SVGWidth = document.getElementById("mysvg").clientWidth;
 SVGHeight = document.getElementById("mysvg").clientHeight;
@@ -150,10 +156,7 @@ Running-=LineSize;
 }
 };
 MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
-B = document.getElementById("mysvg").getElementsByTagName("text");
-for(i=0; i < B.length; i++){
-document.getElementById("mysvg").appendChild(B[i]);
-};
+FixText();
 };
 function myfunction(){
 document.getElementById("mysvg").innerHTML = '';
@@ -163,11 +166,10 @@ W = IsParkingFunction(List)
 MakeList(W[1]);
 if(W[0]){
 PathToSVG(List);
-B = document.getElementById("mysvg").getElementsByTagName("text");
-for(i=0; i < B.length; i++){
-document.getElementById("mysvg").appendChild(B[i]);
 };
-};
+for(i=0; i < 10; i++){
+FixText();
+}
 };
   
 
