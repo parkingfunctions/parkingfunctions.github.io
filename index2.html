@@ -51,6 +51,21 @@ A.textContent = List[i];
 Current.appendChild(A)
 }
 }
+
+  function Triangle(x, y, LineLength){
+Point1 = [LineLength*x, LineLength*y];
+Point1 = Point1[0]+' '+Point1[1];
+Point2 = [LineLength*(x+2), LineLength*y];
+Point2 = Point2[0]+' '+Point2[1];
+Point3 = [LineLength*(x+1), LineLength*(y+1)];
+Point3 = Point3[0]+' '+Point3[1];
+MyPath = 'M '+Point1+' L '+Point2+' L '+Point3+ ' z';
+T =document.createElementNS("http://www.w3.org/2000/svg", "path");
+T.setAttributeNS(null, "d", MyPath);
+T.setAttributeNS(null, "fill", "lightgrey");
+};
+  
+  
 function HeightFromPath(List){
 Running = 0;
 Max = 0
@@ -114,6 +129,15 @@ for(i=0; i < Path.length; i++){
 if(Path[i]=='D'){
 MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
 Running+=LineSize;
+ToAdd = (MaxHeight-Running)/LineSize;
+cx = LineSize*(i-1);
+cy = Running;
+for(j=0; j < ToAdd; j++){
+T = Triangle(cx/LineSize, cy/LineSize, LineSize);
+document.getElementById("mysvg").appendChild(T);
+cy+=LineSize;
+cx-=LineSize;
+}
 }
 else{
 MakeLine(LineSize*i, Running, LineSize*(i+1), (Running-LineSize));
