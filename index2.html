@@ -150,10 +150,9 @@ Running-=LineSize;
 }
 };
 MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
-A = document.getElementById("mysvg").getElementsByTagName("text");
-for(i=0; i < A.length; i++){
-document.getElementById("mysvg").appendChild(A[i]);
-};
+B = document.getElementById("mysvg").getElementsByTagName("text");
+for(i=0; i < B.length; i++){
+document.getElementById("mysvg").appendChild(B[i]);
 };
 function myfunction(){
 document.getElementById("mysvg").innerHTML = '';
@@ -163,7 +162,11 @@ W = IsParkingFunction(List)
 MakeList(W[1]);
 if(W[0]){
 PathToSVG(List);
-}
+B = document.getElementById("mysvg").getElementsByTagName("text");
+for(i=0; i < B.length; i++){
+document.getElementById("mysvg").appendChild(B[i]);
+};
+};
 };
   
 
