@@ -118,7 +118,7 @@ document.getElementById("mysvg").appendChild(Text);
 };
 function FixText(){
 B = document.getElementById("mysvg").getElementsByTagName("text");
-for(i=0; i < B.length; i++){
+for(k=0; k < B.length; k++){
 document.getElementById("mysvg").appendChild(B[i]);
 };
 };
@@ -167,10 +167,10 @@ W = IsParkingFunction(List)
 MakeList(W[1]);
 if(W[0]){
 PathToSVG(List);
-};
-for(i=0; i < 10; i++){
+for(i=0; i < 2; i++){
 FixText();
-}
+};
+};
 };
   
 
