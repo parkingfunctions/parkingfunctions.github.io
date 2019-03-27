@@ -158,19 +158,6 @@ Running-=LineSize;
 MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
 FixText();
 };
-function myfunction(){
-document.getElementById("mysvg").innerHTML = '';
-A = document.getElementById("inputbox").value;
-List = A.split(',');
-W = IsParkingFunction(List)
-MakeList(W[1]);
-if(W[0]){
-PathToSVG(List);
-for(i=0; i < 2; i++){
-FixText();
-};
-};
-};
 
 function PositionFromPath(Path){
 Running = 0;
@@ -203,5 +190,78 @@ return Pairs;
 };
 
   
+function AddArc(x1, y1, x2, y2, IsUp){
+T = document.createElementNS("http://www.w3.org/2000/svg", "path");
+Radius = (((x1-x2)**2+(y1-y2)**2)**0.5)/2.0;
+if(IsUp){
+Flag = 0;
+Colour = 'red';
+}
+else{
+Flag=0;
+Colour='blue';
+}
+CirclePath = 'M'+x1+','+y1+' A'+(Radius)+','+(Radius)+' 0 0 '+Flag+' '+x2+','+y2;
+T.setAttributeNS(null, "d", CirclePath);
+T.setAttributeNS(null, 'stroke-dasharray', '');
+T.setAttributeNS(null, "fill", 'none');
+T.setAttributeNS(null, 'stroke-width', "2");
+T.setAttributeNS(null, 'stroke', Colour);
+document.getElementById("mysvg").appendChild(T);
+
+};
+  
+function Coord(Space, Row){
+CX = (Space+0.5)*LineSize;
+CY = (MaxHeight/LineSize-Row-0.5)*LineSize;
+return [CX, CY]
+};
+  
+function AddDinvCurves(List){
+var Path = ParkingFunctionToPath(List);
+D = DinvFromPath(Path);
+D[0].forEach(function(a){
+Space1 = a[0];
+Space2 = a[1];
+Row1 = a[2];
+Row2 = a[2];
+var CX = Coord(Space1, Row1)[0];
+var CY = Coord(Space1, Row1)[1];
+var DX = Coord(Space2, Row2)[0];
+var DY = Coord(Space2, Row2)[1];
+AddArc(CX, CY, DX, DY, true);
+
+
+});
+D[1].forEach(function(a){
+Space1 = a[0];
+Space2 = a[1];
+Row1 = a[2];
+Row2 = a[2]-1;
+var CX = Coord(Space1, Row1)[0];
+var CY = Coord(Space1, Row1)[1];
+var DX = Coord(Space2, Row2)[0];
+var DY = Coord(Space2, Row2)[1];
+AddArc(CX, CY, DX, DY, false);
+
+})
+FixText();
+FixText();
+};
+
+  function myfunction(){
+document.getElementById("mysvg").innerHTML = '';
+A = document.getElementById("inputbox").value;
+List = A.split(',');
+W = IsParkingFunction(List)
+MakeList(W[1]);
+if(W[0]){
+PathToSVG(List);
+AddDinvCurves(List);
+for(i=0; i < 2; i++){
+FixText();
+};
+};
+};
 
 </script>
