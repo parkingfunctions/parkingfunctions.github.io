@@ -16,50 +16,46 @@
 </html>
 <script>
 function IsParkingFunction(List){
-n = List.length;
-Count = []
+var n = List.length;
+var Count = []
 for(i=0; i < n; i++){
 Count.push(0);
 }
 for(i=0; i < n; i++){
 if(isNaN(+List[i])){
-return [false, ['Something\'s Not A Number.']]
+return false
 };
 Count[(+List[i])-1]+=1
 };
-Answer = [];
-Works = true;
-Running = 0;
+var Works = true;
+var Running = 0;
 for(i=0; i < n; i++){
 Running+=Count[i];
 if(Running < i+1){
-Answer.push('There are only '+(Running)+' numbers <= '+(i+1)+', that\'s not enough, Bad.');
-Works = false;
+return false}
 }
-else{
-Answer.push('There are '+(Running)+' numbers <= '+(i+1)+', that\'s enough, Good!') 
-}
-}
-return [Works, Answer]
+return true
 };
+  
 function MakeList(List){
-Current = document.getElementById("list");
+var Current = document.getElementById("list");
 Current.innerHTML = '';
 for(i=0; i < List.length; i++){
-A = document.createElement("li");
+var A = document.createElement("li");
 A.textContent = List[i];
 Current.appendChild(A)
 }
-}
-  function Triangle(x, y, LineLength){
-Point1 = [LineLength*x, LineLength*y];
-Point1 = Point1[0]+' '+Point1[1];
-Point2 = [LineLength*(x+2), LineLength*y];
-Point2 = Point2[0]+' '+Point2[1];
-Point3 = [LineLength*(x+1), LineLength*(y+1)];
-Point3 = Point3[0]+' '+Point3[1];
-MyPath = 'M '+Point1+' L '+Point2+' L '+Point3+ ' z';
-T =document.createElementNS("http://www.w3.org/2000/svg", "path");
+};
+
+function Triangle(x, y, LineLength){
+var Point1 = [LineLength*x, LineLength*y];
+var Point1 = Point1[0]+' '+Point1[1];
+var Point2 = [LineLength*(x+2), LineLength*y];
+var Point2 = Point2[0]+' '+Point2[1];
+var Point3 = [LineLength*(x+1), LineLength*(y+1)];
+var Point3 = Point3[0]+' '+Point3[1];
+var MyPath = 'M '+Point1+' L '+Point2+' L '+Point3+ ' z';
+var T =document.createElementNS("http://www.w3.org/2000/svg", "path");
 T.setAttributeNS(null, "d", MyPath);
 T.setAttributeNS(null, "fill", "lightgrey");
 return T
@@ -67,9 +63,9 @@ return T
   
   
 function HeightFromPath(List){
-Running = 0;
-Max = 0
-n = List.length;
+var Running = 0;
+var Max = 0
+var n = List.length;
 for(i=0; i < n; i++){
 if(List[i]=='D'){
 Running-=1
@@ -80,6 +76,7 @@ Max = Math.max(Max, Running);
 }}
 return Max
 };
+
 function ParkingFunctionToPath(List){
 n = List.length;
 Path = [];
