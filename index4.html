@@ -182,28 +182,27 @@ return Pairs;
 };
   
 function AddArc(x1, y1, x2, y2, IsUp){
-T = document.createElementNS("http://www.w3.org/2000/svg", "path");
-Radius = (((x1-x2)**2+(y1-y2)**2)**0.5)/2.0;
+var T = document.createElementNS("http://www.w3.org/2000/svg", "path");
+var Radius = (((x1-x2)**2+(y1-y2)**2)**0.5)/2.0;
 if(IsUp){
-Flag = 0;
-Colour = 'red';
+var Flag = 0;
+var Colour = 'red';
 }
 else{
-Flag=0;
-Colour='blue';
+var Flag=0;
+var Colour='blue';
 }
-CirclePath = 'M'+x1+','+y1+' A'+(Radius)+','+(Radius)+' 0 0 '+Flag+' '+x2+','+y2;
+var CirclePath = 'M'+x1+','+y1+' A'+(Radius)+','+(Radius)+' 0 0 '+Flag+' '+x2+','+y2;
 T.setAttributeNS(null, "d", CirclePath);
 T.setAttributeNS(null, 'stroke-dasharray', '');
 T.setAttributeNS(null, "fill", 'none');
 T.setAttributeNS(null, 'stroke-width', "2");
 T.setAttributeNS(null, 'stroke', Colour);
-document.getElementById("mysvg").appendChild(T);
-};
+return T};
   
 function Coord(Space, Row){
-CX = (Space+0.5)*LineSize;
-CY = (MaxHeight/LineSize-Row-0.5)*LineSize;
+var CX = (Space+0.5)*LineSize;
+var CY = (MaxHeight/LineSize-Row-0.5)*LineSize;
 return [CX, CY]
 };
   
