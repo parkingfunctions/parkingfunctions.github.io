@@ -78,9 +78,9 @@ return Max
 };
 
 function ParkingFunctionToPath(List){
-n = List.length;
-Path = [];
-Count = {};
+var n = List.length;
+var Path = [];
+var Count = {};
 for(i=0; i < n; i++){
 Count[i] = [];
 };
@@ -95,7 +95,7 @@ return Path;
 };
 //<line x1="20px" x2="10px" y1="25px" y2="55px" width="5px" stroke="black"></line>
 function MakeLine(x1, y1, x2, y2){
-Line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+var Line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 Line.setAttributeNS(null, "x1", x1+"px");
 Line.setAttributeNS(null, "y1", y1+"px");
 Line.setAttributeNS(null, "x2", x2+"px");
@@ -103,57 +103,56 @@ Line.setAttributeNS(null, "y2", y2+"px");
 Line.setAttributeNS(null, "width", "5px")
 Line.setAttributeNS(null, "stroke", "grey");
 Line.setAttributeNS(null, "stroke-dasharray", "5,5")
-document.getElementById("mysvg").appendChild(Line);
-};
+return Line};
+  
 function MakeText(x, y, String){
-Text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+var Text = document.createElementNS("http://www.w3.org/2000/svg", "text");
 Text.setAttributeNS(null, "x", x+"px");
 Text.setAttributeNS(null, "y", y+"px");
 Text.textContent = String;
-document.getElementById("mysvg").appendChild(Text);
-};
+return Text};
+
 function FixText(){
 B = document.getElementById("mysvg").getElementsByTagName("text");
 for(k=0; k < B.length; k++){
 document.getElementById("mysvg").appendChild(B[k]);
 };
 };
-function PathToSVG(List){
-SVGWidth = document.getElementById("mysvg").clientWidth;
-SVGHeight = document.getElementById("mysvg").clientHeight;
-LineSize = SVGWidth/(2*List.length);
-Path = ParkingFunctionToPath(List);
-MaxHeight = HeightFromPath(Path)*LineSize;
-console.log(Path);
-Running = MaxHeight;
+
+function PathToSVG(List, Element){
+var SVGWidth = document.getElementById("mysvg").clientWidth;
+var SVGHeight = document.getElementById("mysvg").clientHeight;
+var LineSize = SVGWidth/(2*List.length);
+var Path = ParkingFunctionToPath(List);
+var MaxHeight = HeightFromPath(Path)*LineSize;
+var Running = MaxHeight;
 //Start should be at MaxHeight down from the top, which is to say, MaxHeight.
 //
 for(i=0; i < Path.length; i++){
 if(Path[i]=='D'){
-MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
+var Line = MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
 Running+=LineSize;
-ToAdd = Math.round((MaxHeight-Running)/LineSize);
-cx = LineSize*(i-1);
-cy = Running;
-console.log(i, ToAdd)
+var ToAdd = Math.round((MaxHeight-Running)/LineSize);
+var cx = LineSize*(i-1);
+var cy = Running;
 for(j=0; j < ToAdd; j++){
-T = Triangle(cx/LineSize, cy/LineSize, LineSize);
+var T = Triangle(cx/LineSize, cy/LineSize, LineSize);
 document.getElementById("mysvg").appendChild(T);
-cy+=LineSize;
-cx-=LineSize;
+var cy+=LineSize;
+var cx-=LineSize;
 }
 }
 else{
-MakeLine(LineSize*i, Running, LineSize*(i+1), (Running-LineSize));
+var MyLine = MakeLine(LineSize*i, Running, LineSize*(i+1), (Running-LineSize));
 //Midpoint = (LineSize*(i+0.5), (100-LineSize*(Running+0.5));
-MakeText(LineSize*(i+0.5), (Running-0.5*LineSize), ''+Path[i]);
-console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
+var MyText = MakeText(LineSize*(i+0.5), (Running-0.5*LineSize), ''+Path[i]);
 Running-=LineSize;
 }
 };
-MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
+var MyLine = MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
 FixText();
 };
+  
 function PositionFromPath(Path){
 Running = 0;
 PositionDict = {}
