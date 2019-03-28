@@ -1,0 +1,271 @@
+<style>
+</style>
+<html>
+<p> A "parking function" is a sequence of positive integers from 1 to n where there's at least one one, at least two things less than or equal to two, and at least i things less than or equal to i for all i.</p>
+  <p> Try to type a parking function into this box, separated by commas, and see if it works.</p>
+  <p>Hint: "1,1,4,5" shouldn't work, but "1,1,4,2" should work.</p>
+<input type="text" id="inputbox" oninput="myfunction()">
+  </input>
+<ul id="list">
+  </ul>
+<p>There is a bijection between parking functions and "labeled mountain ranges", where "you take number-of-ones steps up, then a step down, then number-of-twos steps up, then a step down", etc.</p>
+<p>Below is the "labeled mountain range" corresponding to your parking function (if you put in a valid parking function). Currently oddly formatted.</p>
+<p id="info"></p>
+<svg id="mysvg" style="width:500; height:500">
+</svg>
+</html>
+<script>
+function IsParkingFunction(List){
+n = List.length;
+Count = []
+for(i=0; i < n; i++){
+Count.push(0);
+}
+for(i=0; i < n; i++){
+if(isNaN(+List[i])){
+return [false, ['Something\'s Not A Number.']]
+};
+Count[(+List[i])-1]+=1
+};
+Answer = [];
+Works = true;
+Running = 0;
+for(i=0; i < n; i++){
+Running+=Count[i];
+if(Running < i+1){
+Answer.push('There are only '+(Running)+' numbers <= '+(i+1)+', that\'s not enough, Bad.');
+Works = false;
+}
+else{
+Answer.push('There are '+(Running)+' numbers <= '+(i+1)+', that\'s enough, Good!') 
+}
+}
+return [Works, Answer]
+};
+function MakeList(List){
+Current = document.getElementById("list");
+Current.innerHTML = '';
+for(i=0; i < List.length; i++){
+A = document.createElement("li");
+A.textContent = List[i];
+Current.appendChild(A)
+}
+}
+  function Triangle(x, y, LineLength){
+Point1 = [LineLength*x, LineLength*y];
+Point1 = Point1[0]+' '+Point1[1];
+Point2 = [LineLength*(x+2), LineLength*y];
+Point2 = Point2[0]+' '+Point2[1];
+Point3 = [LineLength*(x+1), LineLength*(y+1)];
+Point3 = Point3[0]+' '+Point3[1];
+MyPath = 'M '+Point1+' L '+Point2+' L '+Point3+ ' z';
+T =document.createElementNS("http://www.w3.org/2000/svg", "path");
+T.setAttributeNS(null, "d", MyPath);
+T.setAttributeNS(null, "fill", "lightgrey");
+return T
+};
+  
+  
+function HeightFromPath(List){
+Running = 0;
+Max = 0
+n = List.length;
+for(i=0; i < n; i++){
+if(List[i]=='D'){
+Running-=1
+}
+else{
+Running+=1;
+Max = Math.max(Max, Running);
+}}
+return Max
+};
+function ParkingFunctionToPath(List){
+n = List.length;
+Path = [];
+Count = {};
+for(i=0; i < n; i++){
+Count[i] = [];
+};
+for(i=0; i < List.length; i++){
+Count[+List[i]-1].push(i+1)
+};
+for(i=0; i < List.length; i++){
+Count[i].push('D');
+Path = Path.concat(Count[i]);
+}
+return Path;
+};
+//<line x1="20px" x2="10px" y1="25px" y2="55px" width="5px" stroke="black"></line>
+function MakeLine(x1, y1, x2, y2){
+Line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+Line.setAttributeNS(null, "x1", x1+"px");
+Line.setAttributeNS(null, "y1", y1+"px");
+Line.setAttributeNS(null, "x2", x2+"px");
+Line.setAttributeNS(null, "y2", y2+"px");
+Line.setAttributeNS(null, "width", "5px")
+Line.setAttributeNS(null, "stroke", "grey");
+Line.setAttributeNS(null, "stroke-dasharray", "5,5")
+document.getElementById("mysvg").appendChild(Line);
+};
+function MakeText(x, y, String){
+Text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+Text.setAttributeNS(null, "x", x+"px");
+Text.setAttributeNS(null, "y", y+"px");
+Text.textContent = String;
+document.getElementById("mysvg").appendChild(Text);
+};
+function FixText(){
+B = document.getElementById("mysvg").getElementsByTagName("text");
+for(k=0; k < B.length; k++){
+document.getElementById("mysvg").appendChild(B[k]);
+};
+};
+function PathToSVG(List){
+SVGWidth = document.getElementById("mysvg").clientWidth;
+SVGHeight = document.getElementById("mysvg").clientHeight;
+LineSize = SVGWidth/(2*List.length);
+Path = ParkingFunctionToPath(List);
+MaxHeight = HeightFromPath(Path)*LineSize;
+console.log(Path);
+Running = MaxHeight;
+//Start should be at MaxHeight down from the top, which is to say, MaxHeight.
+//
+for(i=0; i < Path.length; i++){
+if(Path[i]=='D'){
+MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
+Running+=LineSize;
+ToAdd = Math.round((MaxHeight-Running)/LineSize);
+cx = LineSize*(i-1);
+cy = Running;
+console.log(i, ToAdd)
+for(j=0; j < ToAdd; j++){
+T = Triangle(cx/LineSize, cy/LineSize, LineSize);
+document.getElementById("mysvg").appendChild(T);
+cy+=LineSize;
+cx-=LineSize;
+}
+}
+else{
+MakeLine(LineSize*i, Running, LineSize*(i+1), (Running-LineSize));
+//Midpoint = (LineSize*(i+0.5), (100-LineSize*(Running+0.5));
+MakeText(LineSize*(i+0.5), (Running-0.5*LineSize), ''+Path[i]);
+console.log(LineSize*i, LineSize*Running, LineSize*(i+1), LineSize*(Running+1));
+Running-=LineSize;
+}
+};
+MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
+FixText();
+};
+function PositionFromPath(Path){
+Running = 0;
+PositionDict = {}
+for(l=0; l < Path.length; l++){
+PositionDict[l] = Running
+if(Path[l] != 'D'){
+Running+=1
+}
+else{
+Running-=1
+}}
+return PositionDict};
+function DinvFromPath(Path){
+var Pairs = [[], []];
+var P = PositionFromPath(Path);
+for(l = 0; l < Path.length; l++){
+for(m = l+1; m < Path.length; m++){
+if(Path[l] != 'D' && Path[m] != 'D' && P[l]==P[m] && Path[l] < Path[m]){
+Pairs[0].push([l, m, P[l]]);
+}
+if(Path[l] != 'D' && Path[m] != 'D' && P[l]-P[m]==1 && Path[l] > Path[m]){
+Pairs[1].push([l, m, P[l]]);
+}
+};
+};
+return Pairs;
+};
+  
+function AddArc(x1, y1, x2, y2, IsUp){
+T = document.createElementNS("http://www.w3.org/2000/svg", "path");
+Radius = (((x1-x2)**2+(y1-y2)**2)**0.5)/2.0;
+if(IsUp){
+Flag = 0;
+Colour = 'red';
+}
+else{
+Flag=0;
+Colour='blue';
+}
+CirclePath = 'M'+x1+','+y1+' A'+(Radius)+','+(Radius)+' 0 0 '+Flag+' '+x2+','+y2;
+T.setAttributeNS(null, "d", CirclePath);
+T.setAttributeNS(null, 'stroke-dasharray', '');
+T.setAttributeNS(null, "fill", 'none');
+T.setAttributeNS(null, 'stroke-width', "2");
+T.setAttributeNS(null, 'stroke', Colour);
+document.getElementById("mysvg").appendChild(T);
+};
+  
+function Coord(Space, Row){
+CX = (Space+0.5)*LineSize;
+CY = (MaxHeight/LineSize-Row-0.5)*LineSize;
+return [CX, CY]
+};
+  
+function AddDinvCurves(List){
+var Path = ParkingFunctionToPath(List);
+D = DinvFromPath(Path);
+D[0].forEach(function(a){
+Space1 = a[0];
+Space2 = a[1];
+Row1 = a[2];
+Row2 = a[2];
+var CX = Coord(Space1, Row1)[0];
+var CY = Coord(Space1, Row1)[1];
+var DX = Coord(Space2, Row2)[0];
+var DY = Coord(Space2, Row2)[1];
+AddArc(CX, CY, DX, DY, true);
+});
+D[1].forEach(function(a){
+Space1 = a[0];
+Space2 = a[1];
+Row1 = a[2];
+Row2 = a[2]-1;
+var CX = Coord(Space1, Row1)[0];
+var CY = Coord(Space1, Row1)[1];
+var DX = Coord(Space2, Row2)[0];
+var DY = Coord(Space2, Row2)[1];
+AddArc(CX, CY, DX, DY, false);
+})
+FixText();
+FixText();
+};
+function AddInfo(List){
+var n = List.length;
+var Sum = 0;
+List.forEach(function(a){Sum+=+a});
+var Area = (n)*(n+1)/2-Sum;
+var Dinv = DinvFromPath(ParkingFunctionToPath(List));
+Area = Math.round(Area, 0);
+Dinv = Dinv[0].length+Dinv[1].length;
+Dinv = Math.round(Dinv, 0)
+document.getElementById("info").innerHTML = 'The parking function below has area='+Area+', dinv='+Dinv+'.'
+console.log('The parking function below has area='+Area+', dinv='+Dinv+'.')
+};
+  
+  function myfunction(){
+document.getElementById("mysvg").innerHTML = '';
+document.getElementById("info").innterHTML='';
+A = document.getElementById("inputbox").value;
+List = A.split(',');
+W = IsParkingFunction(List)
+MakeList(W[1]);
+if(W[0]){
+PathToSVG(List);
+AddDinvCurves(List);
+AddInfo(List);
+for(i=0; i < 2; i++){
+FixText();
+};
+};
+};
+</script>
