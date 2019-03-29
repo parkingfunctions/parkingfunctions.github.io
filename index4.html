@@ -119,44 +119,7 @@ Element.appendChild(B[k]);
 };
 };
 
-function PathToSVG(List, Element){
-var SVGWidth = Element.clientWidth;
-var SVGHeight = Element.clientHeight;
-var LineSize = SVGWidth/(2*List.length);
-var Path = ParkingFunctionToPath(List);
-var MaxHeight = HeightFromPath(Path)*LineSize;
-var Running = MaxHeight;
-//Start should be at MaxHeight down from the top, which is to say, MaxHeight.
-//
-for(i=0; i < Path.length; i++){
-if(Path[i]=='D'){
-var MyLine = MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
-Element.appendChild(MyLine)
-Running+=LineSize;
-var ToAdd = Math.round((MaxHeight-Running)/LineSize);
-var cx = LineSize*(i-1);
-var cy = Running;
-for(j=0; j < ToAdd; j++){
-var T = Triangle(cx/LineSize, cy/LineSize, LineSize);
-document.getElementById("mysvg").appendChild(T);
-Element.appendChild(T)
-cy+=LineSize;
-cx-=LineSize;
-}
-}
-else{
-var MyLine = MakeLine(LineSize*i, Running, LineSize*(i+1), (Running-LineSize));
-Element.appendChild(MyLine)
-//Midpoint = (LineSize*(i+0.5), (100-LineSize*(Running+0.5));
-var MyText = MakeText(LineSize*(i+0.5), (Running-0.5*LineSize), ''+Path[i]);
-Element.appendChild(MyText)
-Running-=LineSize;
-}
-};
-var MyLine = MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
-Element.appendChild(MyText)
-FixText(Element);
-};
+
   
 function PositionFromPath(Path){
 Running = 0;
@@ -205,41 +168,84 @@ T.setAttributeNS(null, 'stroke-width', "2");
 T.setAttributeNS(null, 'stroke', Colour);
 return T};
   
-function Coord(Space, Row){
+function Coord(Space, Row, LineSize, MaxHeight){
 var CX = (Space+0.5)*LineSize;
 var CY = (MaxHeight/LineSize-Row-0.5)*LineSize;
 return [CX, CY]
 };
   
-function AddDinvCurves(List){
+function AddDinvCurves(List, Element, LineSize, MaxHeight){
 var Path = ParkingFunctionToPath(List);
-D = DinvFromPath(Path);
+var D = DinvFromPath(Path);
 D[0].forEach(function(a){
-Space1 = a[0];
-Space2 = a[1];
-Row1 = a[2];
-Row2 = a[2];
-var CX = Coord(Space1, Row1)[0];
-var CY = Coord(Space1, Row1)[1];
-var DX = Coord(Space2, Row2)[0];
-var DY = Coord(Space2, Row2)[1];
-AddArc(CX, CY, DX, DY, true);
+var Space1 = a[0];
+var Space2 = a[1];
+var Row1 = a[2];
+var Row2 = a[2];
+var CX = Coord(Space1, Row1, LineSize, MaxHeight)[0];
+var CY = Coord(Space1, Row1, LineSize, MaxHeight)[1];
+var DX = Coord(Space2, Row2, LineSize, MaxHeight)[0];
+var DY = Coord(Space2, Row2, LineSize, MaxHeight)[1];
+var MyArc = AddArc(CX, CY, DX, DY, true);
+Element.appendChild(MyArc)
 });
 D[1].forEach(function(a){
-Space1 = a[0];
-Space2 = a[1];
-Row1 = a[2];
-Row2 = a[2]-1;
-var CX = Coord(Space1, Row1)[0];
-var CY = Coord(Space1, Row1)[1];
-var DX = Coord(Space2, Row2)[0];
-var DY = Coord(Space2, Row2)[1];
-AddArc(CX, CY, DX, DY, false);
+var Space1 = a[0];
+var Space2 = a[1];
+var Row1 = a[2];
+var Row2 = a[2]-1;
+var CX = Coord(Space1, Row1, LineSize, MaxHeight)[0];
+var CY = Coord(Space1, Row1, LineSize, MaxHeight)[1];
+var DX = Coord(Space2, Row2, LineSize, MaxHeight)[0];
+var DY = Coord(Space2, Row2, LineSize, MaxHeight)[1];
+var MyArc = AddArc(CX, CY, DX, DY, false);
+Element.appendChild(MyArc)
 })
-FixText();
-FixText();
+FixText(Element);
+FixText(Element);
 };
-function AddInfo(List){
+
+function PathToSVG(List, Element){
+var SVGWidth = Element.clientWidth;
+var SVGHeight = Element.clientHeight;
+var LineSize = SVGWidth/(2*List.length);
+var Path = ParkingFunctionToPath(List);
+var MaxHeight = HeightFromPath(Path)*LineSize;
+var Running = MaxHeight;
+//Start should be at MaxHeight down from the top, which is to say, MaxHeight.
+//
+for(i=0; i < Path.length; i++){
+if(Path[i]=='D'){
+var MyLine = MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
+Element.appendChild(MyLine)
+Running+=LineSize;
+var ToAdd = Math.round((MaxHeight-Running)/LineSize);
+var cx = LineSize*(i-1);
+var cy = Running;
+for(j=0; j < ToAdd; j++){
+var T = Triangle(cx/LineSize, cy/LineSize, LineSize);
+document.getElementById("mysvg").appendChild(T);
+Element.appendChild(T)
+cy+=LineSize;
+cx-=LineSize;
+}
+}
+else{
+var MyLine = MakeLine(LineSize*i, Running, LineSize*(i+1), (Running-LineSize));
+Element.appendChild(MyLine)
+//Midpoint = (LineSize*(i+0.5), (100-LineSize*(Running+0.5));
+var MyText = MakeText(LineSize*(i+0.5), (Running-0.5*LineSize), ''+Path[i]);
+Element.appendChild(MyText)
+Running-=LineSize;
+}
+};
+var MyLine = MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
+Element.appendChild(MyLine)
+FixText(Element);
+AddDinvCurves(List, Element, LineSize, MaxHeight);
+};
+  
+  function AddInfo(List){
 var n = List.length;
 var Sum = 0;
 List.forEach(function(a){Sum+=+a});
