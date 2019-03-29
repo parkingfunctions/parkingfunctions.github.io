@@ -206,6 +206,7 @@ FixText(Element);
 };
 
 function PathToSVG(List, Element){
+Element.innerHTML = '';
 var SVGWidth = Element.clientWidth;
 var SVGHeight = Element.clientHeight;
 var LineSize = SVGWidth/(2*List.length);
