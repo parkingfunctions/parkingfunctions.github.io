@@ -209,10 +209,8 @@ FixText(Element);
 FixText(Element);
 };
 
-function PathToSVG(List, Element){
+function PathToSVG(List, Element, SVGWidth, SVGHeight){
 Element.innerHTML = '';
-var SVGWidth = Element.clientWidth;
-var SVGHeight = Element.clientHeight;
 var LineSize = SVGWidth/(2*List.length);
 var Path = ParkingFunctionToPath(List);
 var MaxHeight = HeightFromPath(Path)*LineSize;
