@@ -277,4 +277,13 @@ FixText();
 };
 };
 };
+function AddParkingFunction(List, x, y, Size){
+var g =document.createElementNS("http://www.w3.org/2000/svg", "g");
+document.getElementById("mysvg").appendChild(g);
+PathToSVG(List, g, Size, ResizeObserver);
+var L = document.getElementsByTagName("g")
+var LineY = +document.getElementsByTagName("g")[L.length-1].getElementsByTagName("line")[0].getAttributeNS(null, "y1").replace("p", "").replace("x", "");
+var LineX = +document.getElementsByTagName("g")[L.length-1].getElementsByTagName("line")[0].getAttributeNS(null, "x1").replace("p", "").replace("x", "");
+g.setAttributeNS(null, "transform", "translate("+(x-LineX)+","+(y-LineY)+")")
+};
 </script>
