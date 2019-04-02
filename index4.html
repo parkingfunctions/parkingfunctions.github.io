@@ -2,16 +2,12 @@
 </style>
 <html>
 <p> A "parking function" is a sequence of positive integers from 1 to n where there's at least one one, at least two things less than or equal to two, and at least i things less than or equal to i for all i.</p>
-  <p> Try to type a parking function into this box, separated by commas, and see if it works.</p>
-  <p>Hint: "1,1,4,5" shouldn't work, but "1,1,4,2" should work.</p>
+<p>EG: "1,1,4,5" doesn't work, but "1,1,4,2" does work.</p>
 <p>There is a bijection between parking functions and "labeled mountain ranges", where "you take number-of-ones steps up, then a step down, then number-of-twos steps up, then a step down", etc.</p>
 <p>Two measurements of each parking function are its "area", the number of "grey triangles in the mountain range", and the "dinv", which is the number of (smaller, then larger) pairs of numbers on the same row, plus the number of (larger, then smaller) pairs of numbers with the larger one row above the smaller.</p>
 <p>While "dinv" and "area" seem arbitrary, they can actually be constructed in an interesting quasi-recursive way.</p>
-<svg id="mysvg" viewBox="0 0 500 500">
- <svg id="group1" width="250" height="250" x="0" y="0"></svg>
-<svg id="group2" width="250" height="250" x="250" y="0"></svg>
-<svg id="group3" width="250" height="250" x="0" y="250"></svg>
-<svg id="group4" width="250" height="250" x="250" y="250"></svg>
+<p>There is a function mapping parking functions where the first label is i to parking functions where the first label is i-1, that preserves "dinv" and increases "area" by one.</p>
+  <svg id="mysvg" height="500" width="500">
 </svg>
 </html>
 <script>
