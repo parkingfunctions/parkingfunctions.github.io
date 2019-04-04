@@ -288,4 +288,10 @@ var LineY = +document.getElementsByTagName("g")[L.length-1].getElementsByTagName
 var LineX = +document.getElementsByTagName("g")[L.length-1].getElementsByTagName("line")[0].getAttributeNS(null, "x1").replace("p", "").replace("x", "");
 g.setAttributeNS(null, "transform", "translate("+(x-LineX)+","+(y-LineY)+")")
 };
+  
+AddParkingFunction([1, 4, 1, 6, 2, 2], 250, 70, 200, "mysvgexample");
+ document.getElementById("mysvgexample").appendChild(MakeText(250, 160, '1,4,1,6,2,2'));
+document.getElementById("mysvgexample").appendChild(MakeText(250, 180, 'area=5'));
+document.getElementById("mysvgexample").appendChild(MakeText(250, 200, 'dinv=5'));
+  
 </script>
