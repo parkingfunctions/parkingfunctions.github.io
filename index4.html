@@ -230,7 +230,6 @@ var cx = LineSize*(i-1);
 var cy = Running;
 for(j=0; j < ToAdd; j++){
 var T = Triangle(cx/LineSize, cy/LineSize, LineSize);
-document.getElementById("mysvg").appendChild(T);
 Element.appendChild(T)
 cy+=LineSize;
 cx-=LineSize;
@@ -284,7 +283,7 @@ function AddParkingFunction(List, x, y, Size, ID){
 var g =document.createElementNS("http://www.w3.org/2000/svg", "g");
 document.getElementById(ID).appendChild(g);
 PathToSVG(List, g, Size, ResizeObserver);
-var L = document.getElementsByID("g")
+var L = document.getElementsByTagName("g")
 var LineY = +document.getElementsByTagName("g")[L.length-1].getElementsByTagName("line")[0].getAttributeNS(null, "y1").replace("p", "").replace("x", "");
 var LineX = +document.getElementsByTagName("g")[L.length-1].getElementsByTagName("line")[0].getAttributeNS(null, "x1").replace("p", "").replace("x", "");
 g.setAttributeNS(null, "transform", "translate("+(x-LineX)+","+(y-LineY)+")")
