@@ -11,7 +11,7 @@
 <p>There is a map from parking functions where the first label is i to parking functions where the first label is i-1, that preserves "dinv" and increases "area" by one.</p>
 <p> In terms of "list of numbers", the map is simply "subtract one from the first number and move it to the end".</p>
 <p> In terms of "labeled mountain ranges", the map is "change the 1-label to an n-label and move it up one row; subtract one from every other label", where "n" is the largest label (or the length of the parking function as a list of numbers).</p>
-<svg id="mysvgarea" height="200" width="500">
+<svg id="mysvgarea" height="200" width="700">
 </svg>
 <p>As it happens, every "parking function witho n not on the first row" is in the image of this map, uniquely. That leaves "parking functions with n on the first row".</p>
 <p>Every "parking function with n on the first row" can be formed from an (n-1)-parking function by adding n after k of its "mountains", for some k.</p>
@@ -294,4 +294,19 @@ AddParkingFunction([1, 4, 1, 6, 2, 2], 250, 70, 200, "mysvgexample");
 document.getElementById("mysvgexample").appendChild(MakeText(250, 180, 'area=5'));
 document.getElementById("mysvgexample").appendChild(MakeText(250, 200, 'dinv=4'));
   
+AddParkingFunction([3,3,1,4,1,6], 10, 70, 200, "mysvgarea");
+ document.getElementById("mysvgarea").appendChild(MakeText(10, 160, '3,3,1,4,1,6'));
+document.getElementById("mysvgarea").appendChild(MakeText(10, 180, 'area=3'));
+document.getElementById("mysvgarea").appendChild(MakeText(10, 200, 'dinv=4'));
+  
+AddParkingFunction([3, 1, 4, 1, 6, 2], 240, 70, 200, "mysvgarea");
+ document.getElementById("mysvgarea").appendChild(MakeText(240, 160, '3,1,4,1,6,2'));
+document.getElementById("mysvgarea").appendChild(MakeText(240, 180, 'area=3'));
+document.getElementById("mysvgarea").appendChild(MakeText(240, 200, 'dinv=4'));
+  
+  
+AddParkingFunction([1, 4, 1, 6, 2, 2], 470, 70, 200, "mysvgarea");
+ document.getElementById("mysvgarea").appendChild(MakeText(470, 160, '1,4,1,6,2,2'));
+document.getElementById("mysvgarea").appendChild(MakeText(470, 180, 'area=5'));
+document.getElementById("mysvgarea").appendChild(MakeText(470, 200, 'dinv=4'));
 </script>
