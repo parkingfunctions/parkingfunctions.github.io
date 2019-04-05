@@ -11,12 +11,15 @@
 <p>There is a map from parking functions where the first label is i to parking functions where the first label is i-1, that preserves "dinv" and increases "area" by one.</p>
 <p> In terms of "list of numbers", the map is simply "subtract one from the first number and move it to the end".</p>
 <p> In terms of "labeled mountain ranges", the map is "change the 1-label to an n-label and move it up one row; subtract one from every other label", where "n" is the largest label (or the length of the parking function as a list of numbers).</p>
-<svg id="mysvgarea" height="200" width="700">
+  <p>The below illustration shows this map applied twice to the parking function (3,3,1,4,1,6).</p>
+ <svg id="mysvgarea" height="200" width="700">
 </svg>
 <p>As it happens, every "parking function witho n not on the first row" is in the image of this map, uniquely. That leaves "parking functions with n on the first row".</p>
 <p>Every "parking function with n on the first row" can be formed from an (n-1)-parking function by adding n after k of its "mountains", for some k.</p>
 <p>This will increase "dinv" by k, but leave "area" unchanged.</p>
-<svg id="mysvgarea" height="200" width="500">
+  <p>The below illustration shows the three ways this map might be applied to the parking function (3,3,1,4,1).</p>
+  
+<svg id="mysvgdinv" height="200" width="500">
 </svg>
 <p>That's two recursive operations: one which increases "area" but leaves "dinv" unchanged, and one which increases "dinv" but leaves "area" unchanged.</p>
   <p>Every parking function can be <em>uniquely</em> built up from a series of these operations--as we'll see, you don't need to think in terms of lists of numbers or of labeled mountain ranges at all.</p>
