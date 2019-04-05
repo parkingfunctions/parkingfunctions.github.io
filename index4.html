@@ -309,4 +309,21 @@ AddParkingFunction([1, 4, 1, 6, 2, 2], 470, 70, 200, "mysvgarea");
  document.getElementById("mysvgarea").appendChild(MakeText(470, 160, '1,4,1,6,2,2'));
 document.getElementById("mysvgarea").appendChild(MakeText(470, 180, 'area=5'));
 document.getElementById("mysvgarea").appendChild(MakeText(470, 200, 'dinv=4'));
+  
+function MakeLineTwo(x1, y1, x2, y2){
+var Line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+Line.setAttributeNS(null, "x1", x1+"px");
+Line.setAttributeNS(null, "y1", y1+"px");
+Line.setAttributeNS(null, "x2", x2+"px");
+Line.setAttributeNS(null, "y2", y2+"px");
+Line.setAttributeNS(null, "width", "5px")
+Line.setAttributeNS(null, "stroke", "grey");
+return Line};
+
+document.getElementById('mysvgarea').appendChild(MakeLineTwo(100, 170, 200, 170));
+document.getElementById('mysvgarea').appendChild(MakeLineTwo(180, 150, 200, 170));
+document.getElementById('mysvgarea').appendChild(MakeLineTwo(180, 190, 200, 170));
+document.getElementById('mysvgarea').appendChild(MakeLineTwo(330, 170, 430, 170));
+document.getElementById('mysvgarea').appendChild(MakeLineTwo(410, 150, 430, 170))
+document.getElementById('mysvgarea').appendChild(MakeLineTwo(410, 190, 430, 170))
 </script>
