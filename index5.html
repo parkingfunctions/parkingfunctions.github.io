@@ -1,0 +1,262 @@
+<style>
+</style>
+<html>
+</html>
+<script>
+function IsParkingFunction(List){
+var n = List.length;
+var Count = []
+for(i=0; i < n; i++){
+Count.push(0);
+}
+for(i=0; i < n; i++){
+if(isNaN(+List[i])){
+return false
+};
+Count[(+List[i])-1]+=1
+};
+var Works = true;
+var Running = 0;
+for(i=0; i < n; i++){
+Running+=Count[i];
+if(Running < i+1){
+return false}
+}
+return true
+};
+  
+function MakeList(List){
+var Current = document.getElementById("list");
+Current.innerHTML = '';
+for(i=0; i < List.length; i++){
+var A = document.createElement("li");
+A.textContent = List[i];
+Current.appendChild(A)
+}
+};
+function Triangle(x, y, LineLength){
+var Point1 = [LineLength*x, LineLength*y];
+var Point1 = Point1[0]+' '+Point1[1];
+var Point2 = [LineLength*(x+2), LineLength*y];
+var Point2 = Point2[0]+' '+Point2[1];
+var Point3 = [LineLength*(x+1), LineLength*(y+1)];
+var Point3 = Point3[0]+' '+Point3[1];
+var MyPath = 'M '+Point1+' L '+Point2+' L '+Point3+ ' z';
+var T =document.createElementNS("http://www.w3.org/2000/svg", "path");
+T.setAttributeNS(null, "d", MyPath);
+T.setAttributeNS(null, "fill", "lightgrey");
+return T
+};
+  
+  
+function HeightFromPath(List){
+var Running = 0;
+var Max = 0
+var n = List.length;
+for(i=0; i < n; i++){
+if(List[i]=='D'){
+Running-=1
+}
+else{
+Running+=1;
+Max = Math.max(Max, Running);
+}}
+return Max
+};
+function ParkingFunctionToPath(List){
+var n = List.length;
+var Path = [];
+var Count = {};
+for(i=0; i < n; i++){
+Count[i] = [];
+};
+for(i=0; i < List.length; i++){
+Count[+List[i]-1].push(i+1)
+};
+for(i=0; i < List.length; i++){
+Count[i].push('D');
+Path = Path.concat(Count[i]);
+}
+return Path;
+};
+//<line x1="20px" x2="10px" y1="25px" y2="55px" width="5px" stroke="black"></line>
+function MakeLine(x1, y1, x2, y2){
+var Line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+Line.setAttributeNS(null, "x1", x1+"px");
+Line.setAttributeNS(null, "y1", y1+"px");
+Line.setAttributeNS(null, "x2", x2+"px");
+Line.setAttributeNS(null, "y2", y2+"px");
+Line.setAttributeNS(null, "width", "5px")
+Line.setAttributeNS(null, "stroke", "grey");
+Line.setAttributeNS(null, "stroke-dasharray", "5,5")
+return Line};
+  
+function MakeText(x, y, String){
+var Text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+Text.setAttributeNS(null, "x", x+"px");
+Text.setAttributeNS(null, "y", y+"px");
+Text.textContent = String;
+return Text};
+function FixText(Element){
+var B = Element.getElementsByTagName("text");
+for(k=0; k < B.length; k++){
+Element.appendChild(B[k]);
+};
+};
+  
+function PositionFromPath(Path){
+Running = 0;
+PositionDict = {}
+for(l=0; l < Path.length; l++){
+PositionDict[l] = Running
+if(Path[l] != 'D'){
+Running+=1
+}
+else{
+Running-=1
+}}
+return PositionDict};
+function DinvFromPath(Path){
+var Pairs = [[], []];
+var P = PositionFromPath(Path);
+for(l = 0; l < Path.length; l++){
+for(m = l+1; m < Path.length; m++){
+if(Path[l] != 'D' && Path[m] != 'D' && P[l]==P[m] && Path[l] < Path[m]){
+Pairs[0].push([l, m, P[l]]);
+}
+if(Path[l] != 'D' && Path[m] != 'D' && P[l]-P[m]==1 && Path[l] > Path[m]){
+Pairs[1].push([l, m, P[l]]);
+}
+};
+};
+return Pairs;
+};
+  
+function AddArc(x1, y1, x2, y2, IsUp){
+var T = document.createElementNS("http://www.w3.org/2000/svg", "path");
+var Radius = (((x1-x2)**2+(y1-y2)**2)**0.5)/2.0;
+if(IsUp){
+var Flag = 0;
+var Colour = 'red';
+}
+else{
+var Flag=0;
+var Colour='blue';
+}
+var CirclePath = 'M'+x1+','+y1+' A'+(Radius)+','+(Radius)+' 0 0 '+Flag+' '+x2+','+y2;
+T.setAttributeNS(null, "d", CirclePath);
+T.setAttributeNS(null, 'stroke-dasharray', '');
+T.setAttributeNS(null, "fill", 'none');
+T.setAttributeNS(null, 'stroke-width', "2");
+T.setAttributeNS(null, 'stroke', Colour);
+return T};
+  
+function Coord(Space, Row, LineSize, MaxHeight){
+var CX = (Space+0.5)*LineSize;
+var CY = (MaxHeight/LineSize-Row-0.5)*LineSize;
+return [CX, CY]
+};
+  
+function AddDinvCurves(List, Element, LineSize, MaxHeight){
+var Path = ParkingFunctionToPath(List);
+var D = DinvFromPath(Path);
+D[0].forEach(function(a){
+var Space1 = a[0];
+var Space2 = a[1];
+var Row1 = a[2];
+var Row2 = a[2];
+var CX = Coord(Space1, Row1, LineSize, MaxHeight)[0];
+var CY = Coord(Space1, Row1, LineSize, MaxHeight)[1];
+var DX = Coord(Space2, Row2, LineSize, MaxHeight)[0];
+var DY = Coord(Space2, Row2, LineSize, MaxHeight)[1];
+var MyArc = AddArc(CX, CY, DX, DY, true);
+Element.appendChild(MyArc)
+});
+D[1].forEach(function(a){
+var Space1 = a[0];
+var Space2 = a[1];
+var Row1 = a[2];
+var Row2 = a[2]-1;
+var CX = Coord(Space1, Row1, LineSize, MaxHeight)[0];
+var CY = Coord(Space1, Row1, LineSize, MaxHeight)[1];
+var DX = Coord(Space2, Row2, LineSize, MaxHeight)[0];
+var DY = Coord(Space2, Row2, LineSize, MaxHeight)[1];
+var MyArc = AddArc(CX, CY, DX, DY, false);
+Element.appendChild(MyArc)
+})
+FixText(Element);
+FixText(Element);
+};
+function PathToSVG(List, Element, SVGWidth, SVGHeight){
+Element.innerHTML = '';
+var LineSize = SVGWidth/(2*List.length);
+var Path = ParkingFunctionToPath(List);
+var MaxHeight = HeightFromPath(Path)*LineSize;
+var Running = MaxHeight;
+//Start should be at MaxHeight down from the top, which is to say, MaxHeight.
+//
+for(i=0; i < Path.length; i++){
+if(Path[i]=='D'){
+var MyLine = MakeLine(LineSize*i, Running, LineSize*(i+1), (Running+LineSize));
+Element.appendChild(MyLine)
+Running+=LineSize;
+var ToAdd = Math.round((MaxHeight-Running)/LineSize);
+var cx = LineSize*(i-1);
+var cy = Running;
+for(j=0; j < ToAdd; j++){
+var T = Triangle(cx/LineSize, cy/LineSize, LineSize);
+Element.appendChild(T)
+cy+=LineSize;
+cx-=LineSize;
+}
+}
+else{
+var MyLine = MakeLine(LineSize*i, Running, LineSize*(i+1), (Running-LineSize));
+Element.appendChild(MyLine)
+//Midpoint = (LineSize*(i+0.5), (100-LineSize*(Running+0.5));
+var MyText = MakeText(LineSize*(i+0.5), (Running-0.5*LineSize), ''+Path[i]);
+Element.appendChild(MyText)
+Running-=LineSize;
+}
+};
+var MyLine = MakeLine(0, MaxHeight, LineSize*Path.length, MaxHeight); 
+Element.appendChild(MyLine)
+FixText(Element);
+AddDinvCurves(List, Element, LineSize, MaxHeight);
+};
+  
+
+function AddInfo(List){
+var n = List.length;
+var Sum = 0;
+List.forEach(function(a){Sum+=+a});
+var Area = (n)*(n+1)/2-Sum;
+var Dinv = DinvFromPath(ParkingFunctionToPath(List));
+Area = Math.round(Area, 0);
+Dinv = Dinv[0].length+Dinv[1].length;
+Dinv = Math.round(Dinv, 0);
+return [Area, Dinv];
+};
+  
+
+function AddParkingFunction(List, x, y, Size, ID){
+var g =document.createElementNS("http://www.w3.org/2000/svg", "g");
+document.getElementById(ID).appendChild(g);
+PathToSVG(List, g, Size, ResizeObserver);
+var L = document.getElementsByTagName("g")
+var LineY = +document.getElementsByTagName("g")[L.length-1].getElementsByTagName("line")[0].getAttributeNS(null, "y1").replace("p", "").replace("x", "");
+var LineX = +document.getElementsByTagName("g")[L.length-1].getElementsByTagName("line")[0].getAttributeNS(null, "x1").replace("p", "").replace("x", "");
+g.setAttributeNS(null, "transform", "translate("+(x-LineX)+","+(y-LineY)+")")
+};
+  
+  
+function MakeLineTwo(x1, y1, x2, y2){
+var Line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+Line.setAttributeNS(null, "x1", x1+"px");
+Line.setAttributeNS(null, "y1", y1+"px");
+Line.setAttributeNS(null, "x2", x2+"px");
+Line.setAttributeNS(null, "y2", y2+"px");
+Line.setAttributeNS(null, "width", "5px")
+Line.setAttributeNS(null, "stroke", "grey");
+return Line};
+</script>
